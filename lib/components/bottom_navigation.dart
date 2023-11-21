@@ -15,23 +15,26 @@ class MyBottomNavBar extends StatefulWidget {
 }
 
 class __MyBottomNavBarState extends State<MyBottomNavBar> {
-   int mycurrentIndex=1;
+   int mycurrentIndex=0;
   List pages = const[
 Home(),
-CompletedTask()
+CompletedTask(),
 ];
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       
         body: pages[mycurrentIndex],
-
         floatingActionButton: FloatingActionButton(
           onPressed: () => {
+            setState(
+              (){
+                Navigator.pushNamed(context, '/create_task');
+              }
+            )
           },
           backgroundColor: themeColor,
-          
+
           child: const Icon(
             Icons.add,
             
@@ -40,16 +43,6 @@ CompletedTask()
 
 
         bottomNavigationBar: BottomNavigationBar(
-          // destinations: const [
-          // NavigationDestination(
-          //   icon: Icon(Icons.menu_outlined,
-          //     color: themeColor,),
-          //   label: 'All'
-          //   ),
-
-          //    NavigationDestination(
-          //   icon: Icon(Icons.check_box,color: themeColor,),
-          //   label: "Completed"),
           items:const [
             BottomNavigationBarItem(
               icon: Icon(Icons.menu_outlined,

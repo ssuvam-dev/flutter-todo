@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
                       ],
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child:const Padding(
+                    child: Padding(
                       padding: EdgeInsets.all(20),
                       child:  Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,10 +67,13 @@ class _HomeState extends State<Home> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Icon(
-                                  Icons.edit,
-                                  color: iconColor,
-                                  ),
+                                IconButton(
+                                onPressed: (){
+                                  Navigator.pushNamed(context, '/edit_task');
+                                },
+                                 icon:  Icon(Icons.edit),
+                                 color: iconColor,
+                                 ),
                                               
                                 Icon(
                                   Icons.delete_forever,
