@@ -11,7 +11,7 @@ class ScreenFirst extends StatelessWidget {
            Container(
                 child: Container(
                   child:Image(image: AssetImage("assets/images/remainder.png"),
-                  height: 500.0,),
+                  ),
                 ),
               ),
           

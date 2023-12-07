@@ -11,7 +11,7 @@ class ScreenTwo extends StatelessWidget {
            Container(
                 child: Container(
                   child:Image(image: AssetImage("assets/images/todo.png"),
-                  height: 500.0,),
+                ),
                 ),
               ),
           
