@@ -16,7 +16,6 @@ class MainApp extends StatelessWidget {
     home: MyBottomNavBar(),
     routes: {
       '/create_task':(context) => CreateTask(),
-      '/edit_task':(context) => EditTodo(),
     },
     debugShowCheckedModeBanner: false,
     );

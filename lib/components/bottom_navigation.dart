@@ -47,7 +47,7 @@ CompletedTask(),
             BottomNavigationBarItem(
               icon: Icon(Icons.menu_outlined,
               color: themeColor,),
-              label: 'All'
+              label: 'Todo'
             ),
 
 

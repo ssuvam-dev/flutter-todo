@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/components/app_bar.dart';
+import 'package:todo/models/tasklist.dart';
+import 'package:todo/models/tasks.dart';
 import 'package:todo/utils/colors.dart';
 
 class CreateTask extends StatefulWidget {
@@ -11,7 +13,8 @@ class CreateTask extends StatefulWidget {
 
 class _CreateTaskState extends State<CreateTask> {
     final _formKey = GlobalKey<FormState>();
-
+    final TextEditingController _titleController = TextEditingController();
+    final TextEditingController _detailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -28,6 +31,7 @@ class _CreateTaskState extends State<CreateTask> {
         child: Column(
           children: [
             TextFormField(
+              controller: _titleController,
               decoration: const InputDecoration(
                 hintText: "Title",
                 contentPadding: EdgeInsets.fromLTRB(0,10,0,0),
@@ -43,6 +47,7 @@ class _CreateTaskState extends State<CreateTask> {
             ),
 
           TextFormField(
+            controller: _detailController,
               decoration: const InputDecoration(
                 hintText: "Detail",
                 contentPadding: EdgeInsets.fromLTRB(0,30,0,0),
@@ -60,7 +65,23 @@ class _CreateTaskState extends State<CreateTask> {
             Padding(
               padding: const EdgeInsets.only(top:30.0),
               child: ElevatedButton(
-                onPressed: ()=>{},
+                onPressed: (){
+                      if (_formKey.currentState?.validate() ?? false) {
+                    // Create a new TaskList instance based on user input
+                    TaskList newTask = TaskList(
+                      task: _titleController.text,
+                      description: _detailController.text,
+                      isCompleted: false,
+                    );
+                    globalTasks.add(newTask);
+                    _titleController.text='';
+                    _detailController.text='';
+                    setState(() {
+                      
+                    });
+                    
+                }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: themeColor,
                   minimumSize: const Size.fromHeight(50.0),

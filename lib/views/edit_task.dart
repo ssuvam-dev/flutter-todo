@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:todo/components/app_bar.dart';
 import 'package:todo/utils/colors.dart';
 
-class EditTodo extends StatefulWidget {
-  const EditTodo({super.key});
-
-  @override
-  State<EditTodo> createState() => _EditTodoState();
-}
-
-class _EditTodoState extends State<EditTodo> {
+class EditTodo extends StatelessWidget {
+   EditTodo({
+    super.key,
+    required this.taskname,
+    this.taskdescription ="",
+   });
+final String taskname,taskdescription;
       final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(apptitle: "Edit Task"),
-      body: EditForm(),
+      body: EditForm(context),
     );
   }
 
-  Padding EditForm() {
+  Padding EditForm(context) {
     return Padding(
     padding: const EdgeInsets.all(20.0),
     child: Form(
@@ -27,6 +27,7 @@ class _EditTodoState extends State<EditTodo> {
         child: Column(
           children: [
             TextFormField(
+              initialValue:this.taskname,
               decoration: const InputDecoration(
                 hintText: "Title",
                 contentPadding: EdgeInsets.fromLTRB(0,10,0,0),
@@ -42,12 +43,13 @@ class _EditTodoState extends State<EditTodo> {
             ),
 
           TextFormField(
+            initialValue: this.taskdescription,
               decoration: const InputDecoration(
                 hintText: "Detail",
                 contentPadding: EdgeInsets.fromLTRB(0,30,0,0),
                 focusedBorder: UnderlineInputBorder()
               ),
-              maxLines: 3,
+              maxLines: 2,
               validator: (value){
                 if (value == null || value.isEmpty) {
                     return 'Please enter some text';
@@ -82,7 +84,9 @@ class _EditTodoState extends State<EditTodo> {
                     width: 150,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: ()=>{},
+                      onPressed: (){
+                        Navigator.pop(context); 
+                      },
                        style: ElevatedButton.styleFrom(
                       backgroundColor: themeColor,
                         shape: RoundedRectangleBorder(
