@@ -5,7 +5,7 @@ import 'package:todo/models/tasks.dart';
 import 'package:todo/utils/colors.dart';
 
 class CreateTask extends StatefulWidget {
-  const CreateTask({super.key});
+   CreateTask({super.key});
 
   @override
   State<CreateTask> createState() => _CreateTaskState();
@@ -15,6 +15,7 @@ class _CreateTaskState extends State<CreateTask> {
     final _formKey = GlobalKey<FormState>();
     final TextEditingController _titleController = TextEditingController();
     final TextEditingController _detailController = TextEditingController();
+    String priority="High";
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -56,7 +57,28 @@ class _CreateTaskState extends State<CreateTask> {
               maxLines: 3,
              
             ),
-
+            SizedBox(
+              height: 20.0,
+            ),
+           DropdownButton<String>(
+            isExpanded: true,
+            style: TextStyle(
+              color: themeColor,
+              fontSize: 15.0
+            ),
+            value: priority,
+              items: <String>['High', 'Medium', 'Low'].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (String? value) {
+                setState(() {
+                  priority = value.toString();
+                });
+              },
+),
             Padding(
               padding: const EdgeInsets.only(top:30.0),
               child: ElevatedButton(

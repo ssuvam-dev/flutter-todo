@@ -5,7 +5,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:todo/components/bottom_navigation.dart';
 import 'package:todo/screens/screen1.dart';
 import 'package:todo/screens/screen2.dart';
-import 'package:todo/utils/colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -36,7 +35,8 @@ class _SplashScreenState extends State<SplashScreen> {
       color: Colors.white,
       child: SafeArea(
         child: Stack(
-          children: [PageView(
+          children: [
+            PageView(
             onPageChanged: (value) {
               setState(() {
                 
@@ -52,70 +52,114 @@ class _SplashScreenState extends State<SplashScreen> {
           ]
           ),
           Container(
-
-            alignment: Alignment(0, 0.75),
-            child: Row(
+            margin: EdgeInsets.only(top:600.0),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: 
-            [
-              !isLastPage?
-              GestureDetector(
-                onTap: () {
-                  _pageController.jumpToPage(1);
-                },
-                child: Text("Skip",style: TextStyle(
-                  color:Color.fromRGBO(106, 99, 246, 1),
-                  fontSize: 18.0,
-                ),),
-              ):
-              GestureDetector(
-                onTap: () {
-                  _pageController.jumpToPage(0);
-                },
-                child: Text(" Previous",
-                style: TextStyle(
-                  color:Color.fromRGBO(106, 99, 246, 1),
-                  fontSize: 18.0,
-                ),),
-              )
-              ,
-              SmoothPageIndicator(controller: _pageController, count: 2),
-              !isLastPage ?
-              GestureDetector(
-                onTap: () {
-                  _pageController.nextPage(duration: Duration(milliseconds: 500), curve:Curves.easeIn);
-                },
-                child: Text("Next",style: TextStyle(
-                  color:Color.fromRGBO(106, 99, 246, 1),
-                  fontSize: 18.0,
-                ),),
-              ):
-               SizedBox(
-                    width: 140,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: (){
-                        Navigator.pushReplacement(context,
-         MaterialPageRoute(builder: ((context) => MyBottomNavBar())
-         ));
-                      },
-                       style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromRGBO(106, 99, 246, 1),
-                        shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)
-                      ),
-                      shadowColor: Colors.grey[400],
-                      elevation: 4
-                    ),
-                      child: const Text('Get Started')
-                    ),
+              children: [
+                SmoothPageIndicator(
+                  controller: _pageController,
+                   count: 2,
+                  
+                   ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: 
+                [
+                  !isLastPage?
+                  GestureDetector(
+                    onTap: () {
+                      _pageController.jumpToPage(1);
+                    },
+                    child: getSamePageNavigator("Skip")
+                  ):
+                  GestureDetector(
+                    onTap: () {
+                      _pageController.jumpToPage(0);
+                    },
+                      child: getSamePageNavigator("Previous"),
+                  )
+                  ,
+                  !isLastPage ?
+                  GestureDetector(
+                    onTap: () {
+                      _pageController.nextPage(duration: Duration(milliseconds: 500), curve:Curves.easeIn);
+                    },
+                      child: navigatorBox("Next"),
+                  ):
+                   GestureDetector(
+                    onTap: (){
+                            Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: ((context) => MyBottomNavBar())
+                            ));
+                          },
+                      child: navigatorBox("Get Started"),
                   ),
-              
+                  //  SizedBox(
+                  //       width: 140,
+                  //       height: 50,
+                  //       child: ElevatedButton(
+                  //         onPressed: (){
+                  //           Navigator.pushReplacement(context,
+                  //             MaterialPageRoute(builder: ((context) => MyBottomNavBar())
+                  //             ));
+                  //         },
+                  //          style: ElevatedButton.styleFrom(
+                  //         backgroundColor: Color.fromRGBO(106, 99, 246, 1),
+                  //           shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(10.0)
+                  //         ),
+                  //         shadowColor: Colors.grey[400],
+                  //         elevation: 4
+                  //       ),
+                  //         child: const Text('Get Started')
+                  //       ),
+                  //     ),
+                  
           ]),
+              ],
+            ),
           )
         ]),
         
       )
     );
+  }
+
+  Container getSamePageNavigator(name) {
+    return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      border:Border.all(
+                        color: Color.fromRGBO(106, 99, 246, 1)
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 20.0),
+                      child: Text(name,style: TextStyle(
+                        color:Color.fromRGBO(106, 99, 246, 1),
+                        fontSize: 20.0,
+                      ),),
+                    ),
+                  );
+  }
+
+  Container navigatorBox(name) {
+    return Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(106, 99, 246, 1),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      border:Border.all(
+                        color: Color.fromRGBO(106, 99, 246, 1),
+                        
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 20.0),
+                      child: Text(name,style: TextStyle(
+                        color:Colors.white,
+                        fontSize: 20.0,
+                      ),),
+                    ),
+                  );
   }
 }

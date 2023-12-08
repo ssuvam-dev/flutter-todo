@@ -70,6 +70,7 @@ final String taskname,taskdescription;
                       onPressed: ()=>{},
                        style: ElevatedButton.styleFrom(
                       backgroundColor: themeColor,
+                      
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)
                       ),
