@@ -15,7 +15,7 @@ class _CompletedTaskState extends State<CompletedTask> {
    Widget build(BuildContext context) {
     return Scaffold(
         appBar: MyAppBar(apptitle: "Completed",total: getCompletedTasks().length,),
-        body: MySingleTask(globalTasks:getCompletedTasks())
+        body: MySingleTask()
     );
   }
 }

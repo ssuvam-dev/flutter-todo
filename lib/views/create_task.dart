@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todo/components/app_bar.dart';
 import 'package:todo/models/tasklist.dart';
 import 'package:todo/models/tasks.dart';
@@ -15,7 +16,25 @@ class _CreateTaskState extends State<CreateTask> {
     final _formKey = GlobalKey<FormState>();
     final TextEditingController _titleController = TextEditingController();
     final TextEditingController _detailController = TextEditingController();
+    final TextEditingController _dateController =TextEditingController();
     String priority="High";
+
+    void _showDatePicker()
+    {
+      showDatePicker(
+        context: context, 
+        initialDate: DateTime.now(), 
+        firstDate: DateTime(2000), 
+        
+        lastDate: DateTime(2025))
+        .then((value){
+          setState(() {
+              
+              _dateController.text = DateFormat('yyyy-MM-dd').format(value!).toString();
+          });
+        });
+
+    }
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -79,6 +98,27 @@ class _CreateTaskState extends State<CreateTask> {
                 });
               },
 ),
+SizedBox(
+              height: 20.0,
+            ),
+     TextFormField(
+              controller: _dateController,
+              onTap: _showDatePicker,
+              decoration: const InputDecoration(
+                suffixIcon: Icon(Icons.calendar_month),
+                suffixIconColor: themeColor,
+                hintText: "Choose Date",
+                contentPadding: EdgeInsets.fromLTRB(0,10,0,0),
+                focusedBorder: UnderlineInputBorder()
+              ),
+            
+              validator: (value){
+                if (value == null || value.isEmpty) {
+                    return 'Choose a specific date';
+                  }
+                return null;
+              },
+            ),
             Padding(
               padding: const EdgeInsets.only(top:30.0),
               child: ElevatedButton(
@@ -89,10 +129,14 @@ class _CreateTaskState extends State<CreateTask> {
                       task: _titleController.text,
                       description: _detailController.text,
                       isCompleted: false,
+                      priority: priority,
+                      date: _dateController.text
                     );
                     globalTasks.add(newTask);
                     _titleController.text='';
                     _detailController.text='';
+                    _dateController.text='';
+                    priority="High";
                     setState(() {
                       
                     });

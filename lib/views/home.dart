@@ -16,7 +16,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
        appBar: MyAppBar(apptitle: "TODO",total: getNotCompletedTasks().length,),
-        body: MySingleTask(globalTasks: getNotCompletedTasks(),)
+        body: MySingleTask()
     );
   }
 }

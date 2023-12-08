@@ -5,10 +5,8 @@ import 'package:todo/utils/colors.dart';
 import 'package:todo/views/edit_task.dart';
 
 class MySingleTask extends StatefulWidget {
-  final List<TaskList> globalTasks;
    MySingleTask({
     super.key,
-    required this.globalTasks,
    });
 
   @override
@@ -16,31 +14,135 @@ class MySingleTask extends StatefulWidget {
 }
 
 class _MySingleTaskState extends State<MySingleTask> {
- 
+ List<TaskList> highPriorityTasks = getHighPriorityTask();
+  List<TaskList> mediumPriorityTasks = getMediumPriorityTask();
+  List<TaskList> lowPriorityTasks = getLowPriorityTask();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: bgColor,
-      child: ListView.builder(
-      itemCount: widget.globalTasks.length,
-      itemBuilder: (BuildContext context, int index) {
-        return buildTaskItem(index);
-      }
+
+return SingleChildScrollView(
+  child:   Container(
+        color: bgColor,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildTaskList("High Priority (${highPriorityTasks.length})", highPriorityTasks,const Color.fromARGB(255, 255, 17, 0)),
+            buildTaskList("Medium Priority (${mediumPriorityTasks.length})", mediumPriorityTasks,const Color.fromARGB(255, 162, 146, 2)),
+            buildTaskList("Low Priority (${lowPriorityTasks.length})", lowPriorityTasks,const Color.fromARGB(255, 4, 160, 10)),
+          ],
+        ),
       ),
-    );
+);
+    // return Container(
+    //   color: bgColor,
+    //   child: Padding(
+    //     padding: const EdgeInsets.only(top:10.0),
+    //     child: Column(
+    //       crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: [
+    //         SizedBox(height: 20,),
+    //         Padding(
+    //           padding: EdgeInsets.only(left: 20.0,bottom: 10.0),
+    //           child: Text(
+    //             "High Priority (${highPriorityTasks.length})",
+    //             style: TextStyle(
+    //               decoration: TextDecoration.underline,
+    //               fontSize: 16.0,
+    //               fontWeight: FontWeight.bold,
+    //               color: themeColor
+    //             ),
+    //           ),
+    //         ),
+    //         Container(
+    //           child: ListViewGenerator(highPriorityTasks),
+    //         ),
+            
+      
+    //         SizedBox(height: 20,),
+    //         Padding(
+    //           padding: EdgeInsets.only(left: 20.0),
+    //           child: Text(
+    //             "Medium Priority (${mediumPriorityTasks.length})",
+    //             style: TextStyle(
+    //               decoration: TextDecoration.underline,
+    //               fontSize: 16.0,
+    //               fontWeight: FontWeight.bold,
+    //               color: themeColor
+    //             ),
+    //           ),
+    //         ),
+    //         Container(
+    //           height: screenSize.height* 0.19,
+    //           child: ListViewGenerator(mediumPriorityTasks),
+    //         ),
+      
+    //         SizedBox(height: 20,),
+    //         Padding(
+    //           padding: EdgeInsets.only(left: 20.0),
+    //           child: Text(
+    //             "Low Priority (${lowPriorityTasks.length})",
+    //             style: TextStyle(
+    //               decoration: TextDecoration.underline,
+    //               fontSize: 16.0,
+    //               fontWeight: FontWeight.bold,
+    //               color: themeColor
+    //             ),
+    //           ),
+    //         ),
+    //         Container(
+    //           height: screenSize.height * 0.19,
+    //           child: ListViewGenerator(lowPriorityTasks),
+    //         )
+    //       ],
+    //     ),
+    //   ),
+    // );
     
+  }
+Widget buildTaskList(String title, List<TaskList> tasks,Color colors) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 20,),
+        Padding(
+          padding: EdgeInsets.only(left: 20.0),
+          child: Text(
+            title,
+            style: TextStyle(
+                decoration: TextDecoration.underline,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: colors
+            ),
+          ),
+        ),
+        Container(
+          child: ListViewGenerator(tasks),
+        ),
+      ],
+    );
+  }
+  ListView ListViewGenerator(globalTasks) {
+    return ListView.builder(
+    shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+    itemCount: globalTasks.length,
+    itemBuilder: (BuildContext context, int index) {
+      return buildTaskItem(index);
+    }
+    );
   }
 
    Widget buildTaskItem(int index) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 20, 8, 0),
+      padding: const EdgeInsets.fromLTRB(8, 10, 8, 0),
       child: Column(
         children: [
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: const [
-                BoxShadow(color: Color.fromRGBO(128, 129, 143, 0.9), blurRadius: 3, offset: Offset(0, 4)),
+                BoxShadow(color: Color.fromRGBO(128, 129, 143, 0.9), blurRadius: 1, offset: Offset(0, 2)),
               ],
               borderRadius: BorderRadius.circular(15),
             ),
@@ -50,10 +152,10 @@ class _MySingleTaskState extends State<MySingleTask> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Checkbox(
-                    value: widget.globalTasks[index].isCompleted ?? false,
+                    value: globalTasks[index].isCompleted ?? false,
                     onChanged: (bool? value) {
                       setState(() {
-                        widget.globalTasks[index].isCompleted = value;
+                        globalTasks[index].isCompleted = value;
                       });
                      
                     },
@@ -61,11 +163,11 @@ class _MySingleTaskState extends State<MySingleTask> {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      widget.globalTasks[index].task ?? "",
+                      globalTasks[index].task ?? "",
                       style: const TextStyle(
                         fontSize: 18,
-                        color: themeColor,
-                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w300,
                       ),
                     ),
                   ),
@@ -80,8 +182,8 @@ class _MySingleTaskState extends State<MySingleTask> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => EditTodo(
-                                  taskname: widget.globalTasks[index].task ?? "",
-                                  taskdescription: widget.globalTasks[index].description ?? "",
+                                  taskname: globalTasks[index].task ?? "",
+                                  taskdescription: globalTasks[index].description ?? "",
                                 ),
                               ),
                             );
@@ -99,7 +201,7 @@ class _MySingleTaskState extends State<MySingleTask> {
                           },
                           icon: const Icon(
                             Icons.delete,
-                            color: iconColor,
+                            color: Color.fromARGB(255, 245, 125, 117),
                           ),
                         ),
                       ],
