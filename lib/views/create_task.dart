@@ -40,7 +40,7 @@ class _CreateTaskState extends State<CreateTask> {
             
               validator: (value){
                 if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
+                    return 'Describe your task';
                   }
                 return null;
               },
@@ -54,12 +54,7 @@ class _CreateTaskState extends State<CreateTask> {
                 focusedBorder: UnderlineInputBorder()
               ),
               maxLines: 3,
-              validator: (value){
-                if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                return null;
-              },
+             
             ),
 
             Padding(
