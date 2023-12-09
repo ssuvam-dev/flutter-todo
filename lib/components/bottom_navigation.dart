@@ -5,6 +5,7 @@ import 'package:todo/views/completed_task.dart';
 // import 'package:todo/views/create_task.dart';
 // import 'package:todo/views/edit_task.dart';
 import 'package:todo/views/home.dart';
+import 'package:todo/views/stat.dart';
 // import 'package:todo/views/home.dart';
 
 class MyBottomNavBar extends StatefulWidget {
@@ -19,6 +20,7 @@ class __MyBottomNavBarState extends State<MyBottomNavBar> {
   List pages = const[
 Home(),
 CompletedTask(),
+Statistic()
 ];
   
   @override
@@ -53,9 +55,16 @@ CompletedTask(),
 
               BottomNavigationBarItem(
               icon: Icon(
-                Icons.check_box,
+                Icons.checklist_outlined,
                 color: themeColor,),
               label: 'Completed'
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.query_stats_sharp,
+                color: themeColor,),
+              label: 'Report'
             ),
           ],
           currentIndex:mycurrentIndex,

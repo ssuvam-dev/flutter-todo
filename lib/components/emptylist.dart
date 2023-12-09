@@ -30,7 +30,6 @@ class _EmptyListState extends State<EmptyList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

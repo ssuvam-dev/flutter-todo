@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo/components/emptylist.dart';
+import 'package:todo/controller/taskcontroller.dart';
 import 'package:todo/models/tasklist.dart';
-import 'package:todo/models/tasks.dart';
 import 'package:todo/utils/colors.dart';
 import 'package:todo/views/edit_task.dart';
+import 'package:get/get.dart';
 
 class MySingleTask extends StatefulWidget {
    MySingleTask({
@@ -16,31 +17,48 @@ class MySingleTask extends StatefulWidget {
 }
 
 class _MySingleTaskState extends State<MySingleTask> {
- List<TaskList> highPriorityTasks = getHighPriorityTask();
-  List<TaskList> mediumPriorityTasks = getMediumPriorityTask();
-  List<TaskList> lowPriorityTasks = getLowPriorityTask();
+    TaskController _controller =Get.put(TaskController());
+ 
   @override
   Widget build(BuildContext context) {
-
+List<TaskList> highPriorityTasks = _controller.getHighPriorityTask();
+  List<TaskList> mediumPriorityTasks = _controller.getMediumPriorityTask();
+  List<TaskList> lowPriorityTasks = _controller.getLowPriorityTask();
+  
 return SingleChildScrollView(
-  child:   Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if(highPriorityTasks.isNotEmpty)
-            buildTaskList("High Priority (${highPriorityTasks.length})", highPriorityTasks,Color.fromARGB(255, 217, 101, 93)),
-            if(mediumPriorityTasks.isNotEmpty)
-            buildTaskList("Medium Priority (${mediumPriorityTasks.length})", mediumPriorityTasks, Colors.blue.shade400),
-            if(lowPriorityTasks.isNotEmpty)
-            buildTaskList("Low Priority (${lowPriorityTasks.length})", lowPriorityTasks,Colors.green.shade400),
-            if (highPriorityTasks.isEmpty && mediumPriorityTasks.isEmpty && lowPriorityTasks.isEmpty)
-              Container(
-                
-              child: EmptyList(isCompletedTaskpage: widget.isCompletedTaskpage,),
-    ),
-          ],
-        ),
-      ),
+  child:   GetBuilder<TaskController>(
+    builder: (_) {
+      return Container(
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      if (!widget.isCompletedTaskpage) ...[
+        if (_controller.getHighPriorityTask().isNotEmpty)
+          buildTaskList("High Priority (${_controller.getHighPriorityTask().length})", _controller.getHighPriorityTask(), Color.fromARGB(255, 217, 101, 93)),
+        if (_controller.getMediumPriorityTask().isNotEmpty)
+          buildTaskList("Medium Priority (${_controller.getMediumPriorityTask().length})", _controller.getMediumPriorityTask(), Colors.blue.shade400),
+        if (_controller.getLowPriorityTask().isNotEmpty)
+          buildTaskList("Low Priority (${_controller.getLowPriorityTask().length})", _controller.getLowPriorityTask(), Colors.green.shade400),
+      ] else ...[
+        if (_controller.getCompletedHighPriorityTask().isNotEmpty)
+          buildTaskList("High Priority (${_controller.getCompletedHighPriorityTask().length})", _controller.getCompletedHighPriorityTask(), Color.fromARGB(255, 217, 101, 93)),
+        if (_controller.getCompletedMediumPriorityTask().isNotEmpty)
+          buildTaskList("Medium Priority (${_controller.getCompletedMediumPriorityTask().length})", _controller.getCompletedMediumPriorityTask(), Colors.blue.shade400),
+        if (_controller.getCompletedLowPriorityTask().isNotEmpty)
+          buildTaskList("Low Priority (${_controller.getCompletedLowPriorityTask().length})", _controller.getCompletedLowPriorityTask(), Colors.green.shade400),
+      ],
+      if ((widget.isCompletedTaskpage &&
+              _controller.getCompletedHighPriorityTask().isEmpty &&
+              _controller.getCompletedMediumPriorityTask().isEmpty &&
+              _controller.getCompletedLowPriorityTask().isEmpty) ||
+          (!widget.isCompletedTaskpage && _controller.getHighPriorityTask().isEmpty && _controller.getMediumPriorityTask().isEmpty && _controller.getLowPriorityTask().isEmpty))
+        EmptyList(isCompletedTaskpage: widget.isCompletedTaskpage),
+    ],
+  ),
+);
+
+    }
+  ),
 );
     // return Container(
     //   color: bgColor,
@@ -109,119 +127,131 @@ return SingleChildScrollView(
     
   }
 Widget buildTaskList(String title, List<TaskList> tasks,Color colors) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 20,),
-        Padding(
-          padding: EdgeInsets.only(left: 20.0),
-          child: Text(
-            title,
-            style: TextStyle(
-                decoration: TextDecoration.underline,
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-                color: colors
+    return Builder(
+      builder: (context) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 20,),
+            Padding(
+              padding: EdgeInsets.only(left: 20.0),
+              child: Text(
+                title,
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: colors
+                ),
+              ),
             ),
-          ),
-        ),
-        Container(
-          child: ListViewGenerator(tasks),
-        ),
-      ],
+            Container(
+              child: ListViewGenerator(tasks),
+            ),
+          ],
+        );
+      }
     );
   }
   ListView ListViewGenerator(globalTasks) {
     return ListView.builder(
     shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+    physics: NeverScrollableScrollPhysics(),
     itemCount: globalTasks.length,
     itemBuilder: (BuildContext context, int index) {
-      return buildTaskItem(index);
+      return buildTaskItem(index,globalTasks);
     }
     );
   }
 
-   Widget buildTaskItem(int index) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 10, 8, 0),
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: const [
-                BoxShadow(color: Color.fromRGBO(128, 129, 143, 0.9), blurRadius: 1, offset: Offset(0, 2)),
-              ],
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Checkbox(
-                    value: globalTasks[index].isCompleted ?? false,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        globalTasks[index].isCompleted = value;
-                      });
-                     
-                    },
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Text(
-                      globalTasks[index].task ?? "",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w300,
+   Widget buildTaskItem(int index,List<TaskList>globalTasks) {
+    return GetBuilder<TaskController>(
+      builder: (_) {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(8, 10, 8, 0),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: const [
+                    BoxShadow(color: Color.fromRGBO(128, 129, 143, 0.9), blurRadius: 1, offset: Offset(0, 2)),
+                  ],
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Checkbox(
+                        value: globalTasks[index].isCompleted ?? false,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            globalTasks[index].isCompleted = value;
+                          });
+                            _controller.updateValue(widget.isCompletedTaskpage,globalTasks[index]);
+                         
+                        },
                       ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditTodo(
-                                  taskname: globalTasks[index].task ?? "",
-                                  taskdescription: globalTasks[index].description ?? "",
-                                ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          globalTasks[index].task ?? "",
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                          if(!widget.isCompletedTaskpage)
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditTodo(
+                                      task: globalTasks[index],
+                                  
+                                      // taskname: globalTasks[index].task ?? "",
+                                      // taskdescription: globalTasks[index].description ?? "",
+                                      // priority: globalTasks[index].priority??"",
+                                      // date: globalTasks[index].date??"",
+                                    ),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                                color: iconColor,
                               ),
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.edit,
-                            color: iconColor,
-                          ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                _controller.delete(widget.isCompletedTaskpage,globalTasks[index]);
+                              },
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Color.fromARGB(255, 245, 125, 117),
+                              ),
+                            ),
+                          ],
                         ),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              globalTasks.removeAt(index);
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.delete,
-                            color: Color.fromARGB(255, 245, 125, 117),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      }
     );
   }
 
