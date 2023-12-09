@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/components/emptylist.dart';
 import 'package:todo/models/tasklist.dart';
 import 'package:todo/models/tasks.dart';
 import 'package:todo/utils/colors.dart';
@@ -7,8 +8,9 @@ import 'package:todo/views/edit_task.dart';
 class MySingleTask extends StatefulWidget {
    MySingleTask({
     super.key,
+    this.isCompletedTaskpage=false
    });
-
+  bool isCompletedTaskpage;
   @override
   State<MySingleTask> createState() => _MySingleTaskState();
 }
@@ -22,13 +24,20 @@ class _MySingleTaskState extends State<MySingleTask> {
 
 return SingleChildScrollView(
   child:   Container(
-        color: bgColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildTaskList("High Priority (${highPriorityTasks.length})", highPriorityTasks,const Color.fromARGB(255, 255, 17, 0)),
-            buildTaskList("Medium Priority (${mediumPriorityTasks.length})", mediumPriorityTasks,const Color.fromARGB(255, 162, 146, 2)),
-            buildTaskList("Low Priority (${lowPriorityTasks.length})", lowPriorityTasks,const Color.fromARGB(255, 4, 160, 10)),
+            if(highPriorityTasks.isNotEmpty)
+            buildTaskList("High Priority (${highPriorityTasks.length})", highPriorityTasks,Color.fromARGB(255, 217, 101, 93)),
+            if(mediumPriorityTasks.isNotEmpty)
+            buildTaskList("Medium Priority (${mediumPriorityTasks.length})", mediumPriorityTasks, Colors.blue.shade400),
+            if(lowPriorityTasks.isNotEmpty)
+            buildTaskList("Low Priority (${lowPriorityTasks.length})", lowPriorityTasks,Colors.green.shade400),
+            if (highPriorityTasks.isEmpty && mediumPriorityTasks.isEmpty && lowPriorityTasks.isEmpty)
+              Container(
+                
+              child: EmptyList(isCompletedTaskpage: widget.isCompletedTaskpage,),
+    ),
           ],
         ),
       ),

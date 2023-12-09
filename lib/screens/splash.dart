@@ -62,6 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   
                    ),
                 Row(
+                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: 
                 [
@@ -127,6 +128,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Container getSamePageNavigator(name) {
     return Container(
+                    width: MediaQuery.of(context).size.width * 0.45,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
                       border:Border.all(
@@ -134,17 +136,20 @@ class _SplashScreenState extends State<SplashScreen> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 20.0),
-                      child: Text(name,style: TextStyle(
-                        color:Color.fromRGBO(106, 99, 246, 1),
-                        fontSize: 20.0,
-                      ),),
+                      padding: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 20.0),
+                      child: Center(
+                        child: Text(name,style: TextStyle(
+                          color:Color.fromRGBO(106, 99, 246, 1),
+                          fontSize: 20.0,
+                        ),),
+                      ),
                     ),
                   );
   }
 
   Container navigatorBox(name) {
     return Container(
+      width: MediaQuery.of(context).size.width * 0.45,
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(106, 99, 246, 1),
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -154,11 +159,13 @@ class _SplashScreenState extends State<SplashScreen> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 20.0),
-                      child: Text(name,style: TextStyle(
-                        color:Colors.white,
-                        fontSize: 20.0,
-                      ),),
+                      padding: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 20.0),
+                      child: Center(
+                        child: Text(name,style: TextStyle(
+                          color:Colors.white,
+                          fontSize: 20.0,
+                        ),),
+                      ),
                     ),
                   );
   }

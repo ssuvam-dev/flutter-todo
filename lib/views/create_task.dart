@@ -38,7 +38,7 @@ class _CreateTaskState extends State<CreateTask> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      appBar: MyAppBar(apptitle: 'Add Task'),
+      appBar: MyAppBar(apptitle: 'Add Task',showDeleteButton: false,),
       body: createTaskStructure(),
     );
   }
