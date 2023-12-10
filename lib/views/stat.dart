@@ -17,12 +17,21 @@ class _StatisticState extends State<Statistic> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:MyAppBar(apptitle: "Report",isFixedTitle: true,showDeleteButton: false),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          PercentIndicator(),
-          PieChartState(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SizedBox(
+              height: 10.0,
+            ),
+            PercentIndicator(),
+            SizedBox(
+              height: 20.0,
+            ),
+            PieChartState(),
+            
+          ],
+        ),
       ),
     );
   }

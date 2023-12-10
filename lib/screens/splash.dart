@@ -95,26 +95,6 @@ class _SplashScreenState extends State<SplashScreen> {
                           },
                       child: ButtonComponent(name: "Get Started",colorButton: true,),
                   ),
-                  //  SizedBox(
-                  //       width: 140,
-                  //       height: 50,
-                  //       child: ElevatedButton(
-                  //         onPressed: (){
-                  //           Navigator.pushReplacement(context,
-                  //             MaterialPageRoute(builder: ((context) => MyBottomNavBar())
-                  //             ));
-                  //         },
-                  //          style: ElevatedButton.styleFrom(
-                  //         backgroundColor: Color.fromRGBO(106, 99, 246, 1),
-                  //           shape: RoundedRectangleBorder(
-                  //           borderRadius: BorderRadius.circular(10.0)
-                  //         ),
-                  //         shadowColor: Colors.grey[400],
-                  //         elevation: 4
-                  //       ),
-                  //         child: const Text('Get Started')
-                  //       ),
-                  //     ),
                   
           ]),
               ],

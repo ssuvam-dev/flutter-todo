@@ -133,8 +133,9 @@ void addNewTask(TaskList task)
 
 void updateTask(TaskList newtask,TaskList oldTask)
 {
-  globalTasks.remove(oldTask);
-  globalTasks.add(newtask);
+
+  int index=globalTasks.indexOf(oldTask);
+  globalTasks[index]=newtask;
   update();
 }
 
