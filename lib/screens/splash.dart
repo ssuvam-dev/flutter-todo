@@ -5,7 +5,7 @@ import 'package:todo/components/bottom_navigation.dart';
 import 'package:todo/components/button_component.dart';
 import 'package:todo/screens/screen1.dart';
 import 'package:todo/screens/screen2.dart';
-
+import 'package:get/get.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ]
           ),
           Container(
-            margin: EdgeInsets.only(top:500.0),
+            margin:EdgeInsets.only(top:Get.height*0.6),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
