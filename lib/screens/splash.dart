@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:todo/components/bottom_navigation.dart';
+import 'package:todo/components/button_component.dart';
 import 'package:todo/screens/screen1.dart';
 import 'package:todo/screens/screen2.dart';
 
@@ -51,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
           ]
           ),
           Container(
-            margin: EdgeInsets.only(top:600.0),
+            margin: EdgeInsets.only(top:500.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -70,13 +71,13 @@ class _SplashScreenState extends State<SplashScreen> {
                     onTap: () {
                       _pageController.jumpToPage(1);
                     },
-                    child: getSamePageNavigator("Skip")
+                    child: ButtonComponent(name: "Skip")
                   ):
                   GestureDetector(
                     onTap: () {
                       _pageController.jumpToPage(0);
                     },
-                      child: getSamePageNavigator("Previous"),
+                      child: ButtonComponent(name: "Previous"),
                   )
                   ,
                   !isLastPage ?
@@ -84,7 +85,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     onTap: () {
                       _pageController.nextPage(duration: Duration(milliseconds: 500), curve:Curves.easeIn);
                     },
-                      child: navigatorBox("Next"),
+                      child: ButtonComponent(name: "Next",colorButton: true,),
                   ):
                    GestureDetector(
                     onTap: (){
@@ -92,7 +93,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             MaterialPageRoute(builder: ((context) => MyBottomNavBar())
                             ));
                           },
-                      child: navigatorBox("Get Started"),
+                      child: ButtonComponent(name: "Get Started",colorButton: true,),
                   ),
                   //  SizedBox(
                   //       width: 140,
@@ -125,47 +126,7 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Container getSamePageNavigator(name) {
-    return Container(
-                    width: MediaQuery.of(context).size.width * 0.45,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      border:Border.all(
-                        color: Color.fromRGBO(106, 99, 246, 1)
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 20.0),
-                      child: Center(
-                        child: Text(name,style: TextStyle(
-                          color:Color.fromRGBO(106, 99, 246, 1),
-                          fontSize: 20.0,
-                        ),),
-                      ),
-                    ),
-                  );
-  }
 
-  Container navigatorBox(name) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.45,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(106, 99, 246, 1),
-                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      border:Border.all(
-                        color: Color.fromRGBO(106, 99, 246, 1),
-                        
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 20.0),
-                      child: Center(
-                        child: Text(name,style: TextStyle(
-                          color:Colors.white,
-                          fontSize: 20.0,
-                        ),),
-                      ),
-                    ),
-                  );
-  }
+
+
 }
