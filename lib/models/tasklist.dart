@@ -12,4 +12,19 @@ class TaskList {
     required this.priority,
     required this.date
     });
+ factory TaskList.fromJson(Map<String, dynamic> json)=>TaskList(
+      task : json['task'],
+      description : json['description'] ,
+      isCompleted:json['isCompleted'],
+      priority:json['priority'] ,
+      date:json['date'] 
+ );
+
+  Map<String, dynamic> toJson() => {
+        'task': task,
+        'description': description,
+        'isCompleted':isCompleted,
+        'priority':priority,
+        'date':date
+      };
 }

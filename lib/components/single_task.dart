@@ -12,6 +12,7 @@ class MySingleTask extends StatefulWidget {
     this.isCompletedTaskpage=false
    });
   bool isCompletedTaskpage;
+  bool showPopup =false;
   @override
   State<MySingleTask> createState() => _MySingleTaskState();
 }
@@ -187,13 +188,12 @@ Widget buildTaskList(String title, List<TaskList> tasks,Color colors) {
                       Checkbox(
                         value: globalTasks[index].isCompleted ?? false,
                         onChanged: (bool? value) {
-                          setState(() {
-                            globalTasks[index].isCompleted = value;
-                          });
-                            _controller.updateValue(widget.isCompletedTaskpage,globalTasks[index]);
-                         
+                          
+                           _controller.updateTaskStatus(value,widget.isCompletedTaskpage,globalTasks[index]);
+                            // _controller.updateValue(widget.isCompletedTaskpage,globalTasks[index]);
                         },
                       ),
+                      
                       Expanded(
                         flex: 2,
                         child: Text(
@@ -254,6 +254,7 @@ Widget buildTaskList(String title, List<TaskList> tasks,Color colors) {
       }
     );
   }
+  }
 
-}
+
 

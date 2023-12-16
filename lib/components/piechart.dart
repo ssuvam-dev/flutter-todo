@@ -37,17 +37,18 @@ class _PieChartStateState extends State<PieChartState> {
                   children: [
                     PieChart(
                       dataMap: dataMap,
+                      centerText: _controller.getCenterText(),
                       chartType: ChartType.disc,
                       animationDuration: Duration(milliseconds: 2000),
                       chartRadius: MediaQuery.of(context).size.width *0.5,
                       legendOptions: LegendOptions(
-                          showLegendsInRow: false,
+                          showLegendsInRow: false ,
                           legendPosition: LegendPosition.bottom,
-                          showLegends: true,
+                          showLegends: _controller.getCenterText().length == 0,
                           legendTextStyle: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
-                        ),
+                        )
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top:8.0,bottom:10.0),

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:todo/components/bottom_navigation.dart';
 import 'package:todo/components/button_component.dart';
@@ -17,17 +18,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   PageController _pageController = PageController();
   bool isLastPage=false;
+
   @override
   void initState() {
     super.initState();
-
-    // Timer(
-    //   Duration(seconds:3),
-    //    () {
-    //     Navigator.pushReplacement(context,
-    //      MaterialPageRoute(builder: ((context) => MyBottomNavBar())
-    //      ));
-    // });
   }
   @override
   Widget build(BuildContext context) {
@@ -47,8 +41,6 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               ScreenFirst(),
               ScreenTwo()
-              
-             
           ]
           ),
           Container(

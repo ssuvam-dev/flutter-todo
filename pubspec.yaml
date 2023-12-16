@@ -14,6 +14,7 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   percent_indicator: ^4.0.1
   pie_chart:
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

@@ -1,164 +1,197 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:get/get.dart';
 import 'package:todo/models/tasklist.dart';
-import 'package:intl/intl.dart';
-import 'package:todo/models/tasks.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 class TaskController extends GetxController{
+   late SharedPreferences sharedPreferences;
+   List<TaskList> allTask = List.empty(growable: true);
+   List<TaskList> completedTasks=List.empty(growable: true);
+   List<TaskList> globalTasks=List.empty(growable: true);
+
+  void loadSharedPreferences()async
+  {
+    sharedPreferences = await SharedPreferences.getInstance();
+    updateSharedPreferences();
+  }
+
+  void updateSharedPreferences()
+  {
+       List<String>? data =sharedPreferences.getStringList('todoTask');
   
-  // RxList<TaskList> globalTasks =[
-
-  // ].obs;
-
-
-   RxList<TaskList> globalTasks = RxList<TaskList>();
-   RxList<TaskList> completedTasks = RxList<TaskList>();
+    if(data!=null)
+    {
+      allTask = data.map((task) => TaskList.fromJson(json.decode(task))).toList();
+    }
+    
+    globalTasks =allTask.where((element) => element.isCompleted == false).toList();
+    completedTasks = allTask.where((element) => element.isCompleted == true).toList();
+    update();
+  }
 
   @override
   void onInit() {
+    loadSharedPreferences();
     super.onInit();
-
-    globalTasks.assignAll([
-      TaskList(task: "High Priority Task",description: "test",isCompleted: false,priority: "High",date: DateFormat('yyyy-MM-dd').format(DateTime.now())),
-      TaskList(task: "High Priority Task",description: "test",isCompleted: false,priority: "High",date: DateFormat('yyyy-MM-dd').format(DateTime.now())),
-      TaskList(task: "High Priority Task",description: "test",isCompleted: false,priority: "High",date: DateFormat('yyyy-MM-dd').format(DateTime.now())),
-      TaskList(task: "High Priority Task",description: "test",isCompleted: false,priority: "High",date: DateFormat('yyyy-MM-dd').format(DateTime.now())),
-    TaskList(task: "Medium Priority Task",description: "test",isCompleted: false,priority: "Medium",date: DateFormat('yyyy-MM-dd').format(DateTime.now())),
-     TaskList(task: "Medium Priority Task",description: "test",isCompleted: false,priority: "Medium",date: DateFormat('yyyy-MM-dd').format(DateTime.now())),
-      TaskList(task: "Medium Priority Task",description: "test",isCompleted: false,priority: "Medium",date: DateFormat('yyyy-MM-dd').format(DateTime.now())),
-  TaskList(task: "Medium Priority Task",description: "test",isCompleted: false,priority: "Medium",date: DateFormat('yyyy-MM-dd').format(DateTime.now())),
-    TaskList(task: "Low Priority Task",description: "test",isCompleted: false,priority: "Low",date: DateFormat('yyyy-MM-dd').format(DateTime.now())),
-  TaskList(task: "Low Priority Task",description: "test",isCompleted: false,priority: "Low",date: DateFormat('yyyy-MM-dd').format(DateTime.now()))
-    ]);
-
-    completedTasks.assignAll([
-      TaskList(task: "High Priority Task",description: "test",isCompleted: true,priority: "High",date: DateFormat('yyyy-MM-dd').format(DateTime.now())),
-      TaskList(task: "Medium Priority Task",description: "test",isCompleted: true,priority: "Medium",date: DateFormat('yyyy-MM-dd').format(DateTime.now())),
-      TaskList(task: "Low Priority Task",description: "test",isCompleted: true,priority: "Low",date: DateFormat('yyyy-MM-dd').format(DateTime.now())),
-    ]);
-
   }
-  // RxList<TaskList> getCompletedTask()
+
+
+  // List<TaskList> getCompletedTask()
   // {
-  //   return globalTasks.where((task) => task.isCompleted == true).toList().obs;
+  //   return globalTasks.where((task) => task.isCompleted==true).toList();
   // }
 
-  // RxList<TaskList> getTodoTask()
-  // {
-  //   return globalTasks.where((task) => task.isCompleted == false).toList().obs;
+  // List<TaskList> getTodoTask(){
+  //   return globalTasks.where((task) => task.isCompleted==false).toList();
   // }
 
-//   RxList<TaskList> getNotCompletedTasks() {
-//   return globalTasks.where((task) => task.isCompleted == false).toList().obs;
-// }
+  List<TaskList> getNotCompletedTasks() {
+    return [
 
-RxList<TaskList> getHighPriorityTask() {
-  return globalTasks.where((task) => task.priority == "High").where((task) => task.isCompleted == false).toList().obs;
-}
+    ];
+ }
 
-RxList<TaskList> getMediumPriorityTask() {
-  return globalTasks.where((task) => task.priority == "Medium").where((task) => task.isCompleted == false).toList().obs;
-}
+  List<TaskList> getHighPriorityTask() {
+    return globalTasks.where((task) => task.priority== "High").toList();
+    
+  }
 
-RxList<TaskList> getLowPriorityTask() {
-  return globalTasks.where((task) => task.priority == "Low").where((task) => task.isCompleted == false).toList().obs;
-}
+  List<TaskList> getMediumPriorityTask() {
+    return globalTasks.where((task) => task.priority== "Medium").toList();
+  }
 
-RxList<TaskList> getCompletedHighPriorityTask() {
-  return completedTasks.where((task) => task.priority == "High").toList().obs;
-}
+  List<TaskList> getLowPriorityTask() {
+  return globalTasks.where((task) => task.priority== "Low").toList();
+  }
 
-RxList<TaskList> getCompletedMediumPriorityTask() {
-  return completedTasks.where((task) => task.priority == "Medium").toList().obs;
-}
+  List<TaskList> getCompletedHighPriorityTask() {
+    return completedTasks.where((task) => task.priority== "High").toList();
+  }
 
-RxList<TaskList> getCompletedLowPriorityTask() {
-  return completedTasks.where((task) => task.priority == "Low").toList().obs;
-}
-void clearAll(bool isCompletedTaskPage)
-{
-  isCompletedTaskPage?completedTasks.clear():globalTasks.clear();
- 
-  update();
-}
+  List<TaskList> getCompletedMediumPriorityTask() {
+      return completedTasks.where((task) => task.priority== "Medium").toList();
+  }
 
-void delete(bool isCompletedTaskpage,TaskList task)
-{
-  if(isCompletedTaskpage)
+  List<TaskList> getCompletedLowPriorityTask() {
+    return completedTasks.where((task) => task.priority== "Low").toList();
+  }
+
+  void updateSharedPreferencesData()
   {
-    completedTasks.remove(task);
+    List<String> mylist=allTask.map((task) =>jsonEncode(task.toJson()) ).toList();
+    sharedPreferences.setStringList('todoTask',mylist);
+    updateSharedPreferences();
   }
-  else
+  void updateTaskStatus(bool? value,bool isCompleteTaskPage,TaskList task)
   {
-    globalTasks.remove(task);
+    task.isCompleted=value;
+    updateSharedPreferencesData();
   }
-  update();
-}
 
-void updateValue(bool isCompletedTaskPage,TaskList task)
-{
-  if(isCompletedTaskPage)
+  void clearAll(bool isCompletedTaskPage)
   {
-    globalTasks.add(task);
-    completedTasks.remove(task);
-    update();
-  }
-  else{
-    completedTasks.add(task);
-    globalTasks.remove(task);
-    update();
-  }
-}
+    if(isCompletedTaskPage)
+    {
+      for (var task in completedTasks) {
+        allTask.remove(task);
+      }
+    }
+    else
+    {
+      for (var task in globalTasks) {
+        allTask.remove(task);
+      }
+    }
+    
+    updateSharedPreferencesData();
+  } 
 
-String getAppBarTitle(bool isCompletedTaskPage,bool isFixedTitle,String message)
-{
-  if(isCompletedTaskPage)
+  void delete(bool isCompletedTaskpage,TaskList task)
   {
-    return "Completed Task ${completedTasks.length>0?'(${completedTasks.length})':''}";
+    allTask.remove(task);
+    updateSharedPreferencesData();
   }
-  else if(isFixedTitle)
+
+  // void updateValue(bool isCompletedTaskPage,TaskList task)
+  // {
+  //   if(isCompletedTaskPage)
+  //   {
+  //     print("i");
+  //   }
+  //   else{
+  //     print("o");
+  //   }
+  // }
+
+  String getAppBarTitle(bool isCompletedTaskPage,bool isFixedTitle,String message)
   {
-    return message;
+    if(isCompletedTaskPage)
+    {
+      return "Completed Task ${completedTasks.length>0?'(${completedTasks.length})':''}";
+    }
+    else if(isFixedTitle)
+    {
+      return message;
+    }
+    else{
+      return "TODO ${globalTasks.length>0?'(${globalTasks.length})':''}";
+    }
+    
   }
-  else{
-    return "TODO ${globalTasks.length>0?'(${globalTasks.length})':''}";
-  }
-  
-}
 
-void addNewTask(TaskList task)
-{
-  globalTasks.add(task);
-  update();
-}
-
-void updateTask(TaskList newtask,TaskList oldTask)
-{
-
-  int index=globalTasks.indexOf(oldTask);
-  globalTasks[index]=newtask;
-  update();
-}
-
-double getResult()
-{
-
-  int total_tasks=completedTasks.length + globalTasks.length;
-  if(total_tasks ==0)
+  void addNewTask(TaskList task)
   {
-    return 0.0;
+    allTask.add(task);
+    List<String> mylist=allTask.map((task) =>jsonEncode(task.toJson()) ).toList();
+    sharedPreferences.setStringList('todoTask',mylist);
+    updateSharedPreferences();
   }
-  else{
-      return completedTasks.length/total_tasks;
+
+  void updateTask(TaskList newtask,TaskList oldTask)
+  {
+
+    int index=allTask.indexOf(oldTask);
+    allTask[index]=newtask;
+    updateSharedPreferencesData();
   }
 
-}
+  double getResult()
+  {
 
-String getResultMessage()
-{
-    double result = getResult();
-   int res = (result*100).toInt();
-  return "Efficiency ${res}%.";
-}
-  
+    int total_tasks=completedTasks.length + globalTasks.length;
+    if(total_tasks ==0)
+    {
+      return 0.0;
+    }
+    else{
+        return completedTasks.length/total_tasks;
+    }
 
-}
+  }
+
+  String getResultMessage()
+  {
+    if(allTask.isNotEmpty)
+    {
+      double result = getResult();
+      int res = (result*100).toInt();
+      return "Efficiency ${res}%.";
+    }
+
+    else
+    {
+      return "Not Enough Data";
+    }
+  }
+
+  String getCenterText()
+  {
+    return allTask.isEmpty ? "Not Enough Data" : "";
+  }
+
+    
+
+    
+
+  }

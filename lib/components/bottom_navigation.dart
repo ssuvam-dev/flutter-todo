@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/utils/colors.dart';
 import 'package:todo/views/completed_task.dart';
 // import 'package:todo/views/create_task.dart';
@@ -16,12 +17,24 @@ class MyBottomNavBar extends StatefulWidget {
 }
 
 class __MyBottomNavBarState extends State<MyBottomNavBar> {
+ void loadSharedPreferences()async
+  {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool('openSplashScreen', false);
+  }
+  @override
+  void initState() {
+    super.initState();
+      loadSharedPreferences();
+  }
    int mycurrentIndex=0;
   List pages = const[
 Home(),
 CompletedTask(),
 Statistic()
 ];
+
+
   
   @override
   Widget build(BuildContext context) {
