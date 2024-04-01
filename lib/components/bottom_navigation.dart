@@ -39,6 +39,7 @@ Statistic()
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    
         body: pages[mycurrentIndex],
         floatingActionButton: FloatingActionButton(
           onPressed: () => {
